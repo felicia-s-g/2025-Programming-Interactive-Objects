@@ -103,7 +103,7 @@ This can be done in two easy steps:
   extra_scripts = pre:extra_script.py
   ```
 2. Include the file ```extra_script.py``` inside the main project folder, the file should be at the same level as ```platformio.ini```. You can easily download the file [here](https://github.com/Master-Interaction-Design-SUPSI/2025-Programming-Interactive-Objects/blob/main/z1_connection_issue/extra_script.py).
-3. Your project folder should look like this one:
+3. Your project folder should now look like this one:
   ```
   src
   platformio.ini
