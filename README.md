@@ -97,7 +97,7 @@ The file ```extra_script.py``` is entirely made for fixing the issue.
 
 #### How can I include the fix in an already made folder?<br>
 This can be done in two easy steps:
-1. Open the platformio.ini file and add the following lines of code at the end of the file:
+1. Open the ```platformio.ini``` file and add the following lines of code at the end of the file:
   ```
   ; Include the custom pre-upload script
   extra_scripts = pre:extra_script.py
