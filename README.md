@@ -61,3 +61,40 @@ the phyiscial LED matrix, LEDs as light source(s), context
 
 ### Fallback 
 - If you are unable to generate an idea turn the matrix into a (new) clock!
+
+# Solving errors
+### How to solve connection error on macOS (probably on Sonoma and newer)
+If you are facing the error ``` *** [upload] Error 2 ``` like:
+```
+Connecting........_____....._____....._____....._____....._____....._____....._____
+
+A fatal error occurred: Failed to connect to ESP32: Timed out waiting for packet header
+*** [upload] Error 2
+========================================================= [FAILED] Took 30.98 seconds =========================================================
+
+ *  The terminal process "platformio 'run', '--target', 'upload'" terminated with exit code: 1. 
+ *  Terminal will be reused by tasks, press any key to close it.
+```
+you could have a connection issue with between your mac and your board.<br>
+To solve this refer to the folder ```z1_connection_issue```.<br>
+
+The folder is structured as follows:
+```
+  src
+    main.cpp
+    common
+      pico_driver_v5_pinout.h
+  platformio.ini
+  extra_script.py
+```
+
+#### What is different from the other examples?<br>
+We have added a file named: ```extra_script.py```; This file contains a piece of code to perform a ```default_reset``` before the board upload the platformio project.<br>
+So, make sure to have the ```extra_script.py``` file in your folder at the same level as ```platformio.ini```.<br>
+In order to let know platformio to run the personalised script before the uploading of the project you need to be sure that inside your ```platformio.ini``` file you added the following lines:
+```
+; Include the custom pre-upload script
+extra_scripts = pre:extra_script.py
+```
+
+Finally, before uploading the code into your board, be sure to not have the port selection as "Auto". You need to select the board you want to let the personalised script know the address of your board. To select the port just click on the connection icon, placed in the bottom status bar, "Set upload/monitor/test port" and select your usbserial port.
