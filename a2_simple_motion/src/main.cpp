@@ -46,12 +46,12 @@ int velY = 2;
 void loop() {
 
 	posX = posX + velX;
-	if (posX >= 32 || posX < 0) {
+	if (posX >= TOTAL_WIDTH || posX < 0) {
 		velX = -velX;
 	}
 
 	posY = posY + velY;
-	if (posY >= 32 || posY < 0) {
+	if (posY >= TOTAL_HEIGHT || posY < 0) {
 		velY = -velY;
 	}
 
