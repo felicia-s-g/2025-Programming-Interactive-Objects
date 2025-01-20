@@ -62,8 +62,8 @@ the phyiscial LED matrix, LEDs as light source(s), context
 ### Fallback 
 - If you are unable to generate an idea turn the matrix into a (new) clock!
 
-# Solving errors
-### How to solve connection error on macOS (probably on Sonoma and newer)
+# Issues
+## How to solve connection error on macOS (probably on Sonoma and newer)
 If you are facing the error ``` *** [upload] Error 2 ``` like:
 ```
 Connecting........_____....._____....._____....._____....._____....._____....._____
