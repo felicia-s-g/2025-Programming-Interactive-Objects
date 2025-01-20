@@ -43,8 +43,8 @@ int frame = 0;
 
 void loop() {
 
-	int cx = 15 + sin(frame * 0.022) * 16;
-	int cy = 15 + sin(frame * 0.029) * 16;
+	int cx = 15 + sin(frame * 0.022) * (TOTAL_WIDTH / 2);
+	int cy = 15 + sin(frame * 0.029) * (TOTAL_HEIGHT / 2);
 
 	int r = (sin(frame*0.009)+1)*128;
 	int g = (sin(frame*0.010)+1)*128;
