@@ -43,7 +43,7 @@ void setup() {
 void draw() {
    
   float imgSize = map(sin(frameCount * 0.05), -1, 1, 32, 256);
-  image(img, 0, -frameCount / 2 % 100);
+  image(img, 0, - frameCount / 2 % 100);
   
   // --------------------------------------------------------------------------
   // Write to the serial port (if open)
