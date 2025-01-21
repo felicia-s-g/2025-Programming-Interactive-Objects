@@ -74,7 +74,7 @@ A fatal error occurred: Failed to connect to ESP32: Timed out waiting for packet
 ```
 you could have a connection issue with between your mac and your board.<br>
 To solve this follow those steps:
-1. Open the folder ```z1_connection_issue```` in Visual Studio Code and wait until Platformio is correctly setted up;
+1. Open the folder ```z1_connection_issue``` in Visual Studio Code and wait until Platformio is correctly setted up;
 2. As soon as the setup is completed open the platformio terminal by clicking on the icon in the status bar, if you don't know where is it just refer to this image ![platformio terminal](https://github.com/Master-Interaction-Design-SUPSI/2025-Programming-Interactive-Objects/blob/main/zz_resources/openTerminal.png?raw=true);
 3. Write in the terminal the following command ```python3 connection_fix.py```
 4. If the terminal is printing ```Updated /Users/yourUsername/.platformio/platforms/espressif32@3.5.0/builder/main.py successfully``` everything worked properly.
