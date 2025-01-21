@@ -22,7 +22,7 @@ void setup() {
   
   smooth(8);
   
-  img = loadImage("t_2.png");
+  img = loadImage("try_1.png");
 
   buffer = new byte[TOTAL_WIDTH * TOTAL_HEIGHT * (COLOR_DEPTH / 8)];
 
@@ -43,7 +43,7 @@ void setup() {
 void draw() {
    
   float imgSize = map(sin(frameCount * 0.05), -1, 1, 32, 256);
-  image(img, 0, -frameCount / 2 % 1);
+  image(img, 0, -frameCount / 2 % 100);
   
   // --------------------------------------------------------------------------
   // Write to the serial port (if open)
