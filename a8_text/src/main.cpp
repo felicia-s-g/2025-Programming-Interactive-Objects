@@ -1,5 +1,5 @@
 /**
- * Control a single LED of a RGB matrix, directly from the controller.
+ * Small example that uses the built in font of the SmartMatrix libray.
  *
  * The SmartMatrix library offers many tools (and examples) to display graphics,
  * animations and texts.
@@ -38,8 +38,6 @@ void setup() {
 	// Turn the on board LED on
 	digitalWrite(PICO_LED_PIN, 1);
 
-
-
 	bg.enableColorCorrection(true);
 	matrix.addLayer(&bg);
 	matrix.setBrightness(255);
@@ -53,11 +51,11 @@ void loop() {
 
 	bg.fillScreen({0, 0, 0});
 	bg.setFont(font3x5);
-    // bg.setFont(font5x7);
-    // bg.setFont(font6x10);
-    // bg.setFont(font8x13);
-    // bg.setFont(gohufont11);
-    // bg.setFont(gohufont11b);	
+	// bg.setFont(font5x7);
+	// bg.setFont(font6x10);
+	// bg.setFont(font8x13);
+	// bg.setFont(gohufont11);
+	// bg.setFont(gohufont11b);	
 	for (int i=0; i<5; i++) {
 		int x = sin(frame * 0.03 + ((float) i * PI) / 5.0) * TOTAL_WIDTH / 2;
 		bg.drawString(x, i * 6 + 1, {255, 0, 0}, "HELLO");
