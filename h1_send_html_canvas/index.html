@@ -31,9 +31,9 @@
 <body>
 	<canvas></canvas>	
 	<button id="connect">Connect Serial Port</button>	
-	<pre></pre>
+	<pre>Connect to the serial port of the Pico Driver (Chrome only)</pre>
 	<script type="module">
-
+		
 		const TOTAL_WIDTH = 32
 		const TOTAL_HEIGHT = 32
 		const BAUD_RATE = 921600
@@ -53,14 +53,15 @@
 		const ctx = canvas.getContext('2d', { willReadFrequently: true })
 		canvas.width = TOTAL_WIDTH
 		canvas.height = TOTAL_HEIGHT
-		canvas.style.width = TOTAL_WIDTH * 5 + 'px'
-		canvas.style.height = TOTAL_HEIGHT * 5 + 'px'
+		canvas.style.width = TOTAL_WIDTH * 10 + 'px'
+		canvas.style.height = TOTAL_HEIGHT * 10 + 'px'
 		
 		// Serial port writer
 		let writer = null
 		
 		// Handle serial port connection
 		document.getElementById('connect').addEventListener('click', async () => {
+			log.textContent = ""
 			try {
 				// Request serial port access
 				const serialPort = await navigator.serial.requestPort()
@@ -117,10 +118,10 @@
 			
 			ctx.fillStyle = 'black'
 			ctx.fillRect(0, 0, canvas.width, canvas.height)
-			const rectWidth = 2
-			const rectHeight = 4
+			const rectWidth = 1
+			const rectHeight = 8
 			const colors = ['red', 'royalblue', 'gold', 'limegreen']
-			for (let i = 0; i < 16; i++) {
+			for (let i = 0; i < Math.floor(canvas.width / rectWidth); i++) {
 				ctx.fillStyle = colors[i % colors.length]
 				const y = Math.floor((Math.sin(frame * 0.005 * (i+8)) * 0.5 + 0.5) * (canvas.height - rectHeight + 1))
 				ctx.fillRect(i * rectWidth, y, rectWidth, rectHeight)
