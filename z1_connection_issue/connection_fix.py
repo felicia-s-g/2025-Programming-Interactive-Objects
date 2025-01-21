@@ -4,6 +4,12 @@ import re
 # Path to the target Python file
 file_path = os.path.expanduser("~/.platformio/platforms/espressif32@3.5.0/builder/main.py")
 
+if not os.path.isfile(file_path):
+    file_path = os.path.expanduser("~/.platformio/platforms/espressif32/builder/main.py")
+    if not os.path.isfile(file_path):
+        print("Error: Could not find the main.py file.")
+        exit(1)
+
 # New code to replace the `elif upload_protocol == "esptool":` block
 new_code = """
     def install_esptool():
