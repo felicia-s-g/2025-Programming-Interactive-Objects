@@ -27,7 +27,7 @@ void setup() {
 
   try {
     // On macOS / Linux see the console for all wavailable ports
-    final String PORT_NAME = "/dev/cu.usbserial-02B60E77";
+    final String PORT_NAME = "/dev/cu.usbserial-02B3ACDB";
     // On Windows the ports are numbered
     // final String PORT_NAME = "COM3";
     serial = new Serial(this, PORT_NAME, BAUD_RATE);
