@@ -73,39 +73,8 @@ A fatal error occurred: Failed to connect to ESP32: Timed out waiting for packet
 ========================================================= [FAILED] Took 30.98 seconds =========================================================
 ```
 you could have a connection issue with between your mac and your board.<br>
-To solve this refer to the folder ```z1_connection_issue```.<br>
-
-The folder is structured as follows:
-```
-  src
-    main.cpp
-  platformio.ini
-  extra_script.py
-```
-
-The files that we need to take into consideration are:
-- platformio.ini
-- extra_script.py
-
-In the first file, ```platformio.ini```, we added the last two lines of code:
-```
-; Include the custom pre-upload script
-extra_scripts = pre:extra_script.py
-```
-
-The file ```extra_script.py``` is entirely made for fixing the issue.
-
-#### How can I include the fix in an already made folder?<br>
-This can be done in two easy steps:
-1. Open the ```platformio.ini``` file and add the following lines of code at the end of the file:
-  ```
-  ; Include the custom pre-upload script
-  extra_scripts = pre:extra_script.py
-  ```
-2. Include the file ```extra_script.py``` inside the main project folder, the file should be at the same level as ```platformio.ini```. You can easily download the file [here](https://github.com/Master-Interaction-Design-SUPSI/2025-Programming-Interactive-Objects/blob/main/z1_connection_issue/extra_script.py).
-3. Your project folder should now look like this one:
-  ```
-  src
-  platformio.ini
-  extra_script.py
-  ```
+To solve this follow those steps:
+1. Open the folder ```z1_connection_issue``` in Visual Studio Code and wait until Platformio is correctly setted up;
+2. As soon as the setup is completed open the platformio terminal by clicking on the icon in the status bar, if you don't know where is it just refer to this image ![platformio terminal](https://github.com/Master-Interaction-Design-SUPSI/2025-Programming-Interactive-Objects/blob/main/zz_resources/openTerminal.png?raw=true);
+3. Write in the terminal the following command ```python3 connection_fix.py```
+4. If the terminal is printing ```Updated /Users/yourUsername/.platformio/platforms/espressif32@3.5.0/builder/main.py successfully``` everything worked properly.
