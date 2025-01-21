@@ -1,27 +1,43 @@
-import os
-from os.path import expanduser
+import subprocess
+import sys
+import serial.tools.list_ports
 Import("env")
 
-def before_upload(source, target, env):
-    print("Let's erase the flash before uploading")
-    # Retrieve the upload port from platformio.ini
-    upload_port = env.subst("$UPLOAD_PORT")
-    
-    # Define the path to esptool (adjust based on your system)
-    esptool_path = os.path.join(
-        expanduser("~"),
-        "Library/Arduino15/packages/esp32/tools/esptool_py/4.5.1/esptool"
-    )
-    
-    print(f"Using port: {upload_port}")
-    print(f"Using esptool: {esptool_path}")
-    
-    # Run the reset command using esptool with dynamic port and path
-    env.Execute(
-        f"'{esptool_path}' --chip esp32 --port '{upload_port}' --baud 921600 --before default_reset --after hard_reset erase_flash"
-    )
-    
-    print("Now we can upload platformio project")
+def ensure_esptool_installed():
+    try:
+        import esptool
+        return esptool
+    except ImportError:
+        print("esptool not found. Installing...")
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "esptool"])
+        import esptool
+        print("esptool installed successfully.")
+        return esptool
 
-# Attach the pre-upload action
+def detect_upload_port():
+    for port in serial.tools.list_ports.comports():
+        if "cu.usbserial" in port.name:
+            print(f"Found upload port: /dev/{port.name}")
+            return f"/dev/{port.name}"
+
+    print("Error: No suitable upload port found. Ensure the device is connected.")
+    env.Exit(1)
+
+esptool = ensure_esptool_installed()
+
+def before_upload(source, target, env):
+    upload_port = detect_upload_port()
+
+    args = [
+        "--chip", "auto",
+        "--port", upload_port,
+        "--baud", env.subst("$UPLOAD_SPEED"),
+        "--before", "default_reset",
+        "--after", "hard_reset",
+        "erase_flash"
+    ]
+    
+    print(f"Executing esptool with arguments: {args}")
+    esptool.main(args)
+
 env.AddPreAction("upload", before_upload)
