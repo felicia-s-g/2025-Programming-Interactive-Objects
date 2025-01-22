@@ -1,23 +1,23 @@
 import processing.serial.*;
 
 Serial serial;
-int TOTAL_WIDTH = 32; // Canvas width in characters
-int TOTAL_HEIGHT = 32; // Canvas height in characters
-char[] asciiPalette = { '.', ':', '*', '+', '#', '@' }; // ASCII shades
-color[] colors = { #CF2945, #000000, #DA8B15, #389623 }; // Colors used in the original code with added white for higher intensity
+int TOTAL_WIDTH = 32; 
+int TOTAL_HEIGHT = 32;
+char[] asciiPalette = { '.', ':', '*', '+', '#', '@' }; // Characters
+color[] colors = { #CF2945, #000000, #389623, #DA8B15 };
 
-float glitchIntensity = 0.6; // Adjust glitch intensity (0 to 1)
+float glitchIntensity = 0.6; // adaptable glitch intensity (0 to 1)
 byte[] buffer;
 
 void setup() {
-  size(32 * 16, 32); // Maintain 32x32 size, scaled up for visibility
-  frameRate(15); // Slow framerate for glitch effect
+  size(32, 32); 
+  frameRate(40); // adaptable framerate 
   noSmooth();
   textAlign(CENTER, CENTER);
-  textSize(width / TOTAL_WIDTH); // Adjust text size to fit the grid
-  fill(255);
+  textSize(width / TOTAL_WIDTH);
+  fill(0);
 
-  buffer = new byte[TOTAL_WIDTH * TOTAL_HEIGHT * 2]; // 16-bit color depth
+  buffer = new byte[TOTAL_WIDTH * TOTAL_HEIGHT * 3]; // 16-bit color depth
 
   // Initialize serial port
   String[] ports = Serial.list();
