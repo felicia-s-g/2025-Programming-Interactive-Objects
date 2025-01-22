@@ -1,92 +1,132 @@
-/**
- * This Processing sketch sends all the pixels of the canvas to the serial port.
- */
-
 import processing.serial.*;
 
 final int TOTAL_WIDTH  = 32;
 final int TOTAL_HEIGHT = 32;
-final int COLOR_DEPTH  = 16; // 24 or 16 bits
 final int BAUD_RATE    = 921600;
 
 Serial serial;
-byte[]buffer;
+byte[] buffer;
 
-// PImage is Processing's image type
-PImage img;
+PImage sourceImage;
+Particle[] particles;
 
 void setup() {
-  // The Processing preprocessor only accepts literal values for size()
-  // We can't do: size(TOTAL_WIDTH, TOTAL_HEIGHT);
   size(32, 32);
+  frameRate(60);
   
-  smooth(8);
-  
-  img = loadImage("try_2.png");
+  sourceImage = loadImage("PASARE ALB.png");
+  sourceImage.resize(TOTAL_WIDTH, TOTAL_HEIGHT); 
 
-  buffer = new byte[TOTAL_WIDTH * TOTAL_HEIGHT * (COLOR_DEPTH / 8)];
-
-  String[] list = Serial.list();
-  printArray(list);
+  buffer = new byte[TOTAL_WIDTH * TOTAL_HEIGHT * 2]; // For 16-bit color output
+  particles = new Particle[TOTAL_WIDTH * TOTAL_HEIGHT]; // One particle per pixel
   
-  try {
-    // On macOS / Linux see the console for all available ports
-    //final String PORT_NAME = "/dev/cu.usbserial-02B5FCCE";
-    final String PORT_NAME = "/dev/tty.usbserial-02B62278";
-    // On Windows the ports are numbered
-    // final String PORT_NAME = "COM3";
-    serial = new Serial(this, PORT_NAME, BAUD_RATE);
-  } catch (Exception e) {
-    println("Serial port not intialized...");
-  }  
-}
-
-void draw() {
-   
-  float imgSize = map(sin(frameCount * 0.2), -1, 1, 32, 256);
-  image(img, 0, - frameCount / 2 % 1);
+  // Initialize particles (starting from edges or center randomly)
+  int index = 0;
   
-  // --------------------------------------------------------------------------
-  // Write to the serial port (if open)
-  if (serial != null) {
-    loadPixels();
-    int idx = 0;
-    if (COLOR_DEPTH == 24) {
-      for (int i=0; i<pixels.length; i++) {
-        color c = pixels[i];
-        buffer[idx++] = (byte)(c >> 16 & 0xFF); // r
-        buffer[idx++] = (byte)(c >> 8 & 0xFF);  // g
-        buffer[idx++] = (byte)(c & 0xFF);       // b
-      }
-    } else if (COLOR_DEPTH == 16) {
-      for (int i=0; i<pixels.length; i++) {
-        color c = pixels[i];
-        byte r = (byte)(c >> 16 & 0xFF); // r
-        byte g = (byte)(c >> 8 & 0xFF);  // g
-        byte b = (byte)(c & 0xFF);       // b
-        int rgb24 = packRGB16(r, g, b);
-        byte[] bytes = splitBytes(rgb24);
-        buffer[idx++] = bytes[0];
-        buffer[idx++] = bytes[1];
-      }
+  for (int y = 0; y < TOTAL_HEIGHT; y++) { // loops over all rows of the image
+    for (int x = 0; x < TOTAL_WIDTH; x++) { // loops over all columns of the image
+    
+      boolean startFromCenter = random(1) < 0.5; // Randomly decide start point (random nr. between 1 and 0)
+      
+      // if startFromCenter is true, starting position is the center of the canvas
+      int startX = startFromCenter ? width / 2 : 
+      
+      
+      (random(1) < 0.5 ? 0 : width - 1);
+      
+      //
+      int startY = startFromCenter ? height / 2 : (random(1) < 0.5 ? 0 : height - 1);
+      color targetColor = sourceImage.get(x, y); // Get target pixel color
+      particles[index++] = new Particle(startX, startY, x, y, targetColor);
     }
-    serial.write('*');     // The 'data' command
-    serial.write(buffer);  // ...and the pixel values
+  }
+
+  // Setup serial connection
+  String[] ports = Serial.list();
+  printArray(ports);
+  try {
+    String portName = "/dev/cu.usbserial-02B5FCCE"; // Replace with your port
+    serial = new Serial(this, portName, BAUD_RATE);
+    println("Serial port initialized: " + portName);
+  } catch (Exception e) {
+    println("Serial port not initialized...");
   }
 }
 
-// Convert 8-bit RGB values to 5-6-5 bits
-// Pack into 16-bit value: RRRRRGGG GGGBBBBB
-int packRGB16(byte r, byte g, byte b) {
-  byte r5 = (byte)((r >> 3) & 0x1F);  // 5 bits for red
-  byte g6 = (byte)((g >> 2) & 0x3F);  // 6 bits for green
-  byte b5 = (byte)((b >> 3) & 0x1F);  // 5 bits for blue
-  return (r5 << 11) | (g6 << 5) | b5;
+void draw() {
+  background(0);
+
+  // Update and display all particles
+  for (Particle p : particles) {
+    p.update();
+    p.display();
+  }
+
+  // Send current state to serial
+  sendToSerial();
 }
 
-// Splits a 16 bit int into two bytes
-byte[] splitBytes(int int16) {
-  byte highByte = (byte)((int16 >> 8) & 0xFF);  // Get upper 8 bits
-  byte lowByte  = (byte)(int16 & 0xFF);        // Get lower 8 bits
-  return new byte[]{highByte, lowByte};
+// Particle class to handle individual pixels
+class Particle {
+  float x, y;          // Current position
+  int targetX, targetY; // Target (final) position
+  color targetColor;   // Target pixel color
+  boolean arrived;     // Has the particle reached its target?
+
+  Particle(int startX, int startY, int targetX, int targetY, color targetColor) {
+    this.x = startX;
+    this.y = startY;
+    this.targetX = targetX;
+    this.targetY = targetY;
+    this.targetColor = targetColor;
+    this.arrived = false;
+  }
+
+  void update() {
+    if (!arrived) {
+      // Move towards the target position
+      x += (targetX - x) * 0.02; // Smooth movement
+      y += (targetY - y) * 0.02;
+      
+      // stop moving when close enough to the target
+      if (dist(x, y, targetX, targetY) < 0.5) {
+        x = targetX;
+        y = targetY;
+        arrived = true;
+      }
+    }
+  }
+
+  void display() {
+    if (arrived && brightness(targetColor) > 0) {
+      fill(targetColor); // Use the target color
+    } else {
+      fill(0); // Black for non-arrived particles
+    }
+    noStroke();
+    rect(x * (width / TOTAL_WIDTH), y * (height / TOTAL_HEIGHT), 
+         width / TOTAL_WIDTH, height / TOTAL_HEIGHT);
+  }
+}
+
+void sendToSerial() {
+  if (serial != null) {
+    loadPixels();
+    int idx = 0;
+    for (int y = 0; y < TOTAL_HEIGHT; y++) {
+      for (int x = 0; x < TOTAL_WIDTH; x++) {
+        color c = get(x * (width / TOTAL_WIDTH), y * (height / TOTAL_HEIGHT));
+        int rgb16 = packRGB16((int) red(c), (int) green(c), (int) blue(c));
+        buffer[idx++] = (byte) ((rgb16 >> 8) & 0xFF); // High byte
+        buffer[idx++] = (byte) (rgb16 & 0xFF);        // Low byte
+      }
+    }
+    serial.write('*');     // Start of frame
+    serial.write(buffer);  // Pixel data
+  }
+}
+
+// Pack RGB into 16-bit 5-6-5 format
+int packRGB16(int r, int g, int b) {
+  return ((r >> 3) << 11) | ((g >> 2) << 5) | (b >> 3);
 }
