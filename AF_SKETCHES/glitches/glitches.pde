@@ -34,8 +34,8 @@ void setup() {
 void draw() {
   background(#000000); // Black background
 
-  for (int y = 0; y < TOTAL_HEIGHT; y++) {
-    for (int x = 0; x < TOTAL_WIDTH; x++) {
+  for (int y = 0; y < TOTAL_HEIGHT; y++) { // iterates over the rows (y)
+    for (int x = 0; x < TOTAL_WIDTH; x++) { // iterates over the columns
       char symbol = getGlitchySymbol(x, y);
       float intensity = getGlitchyIntensity(x, y); // Light intensity determines size
 
