@@ -13,49 +13,41 @@ Particle[] particles; // An array of Particle objects representing individual pi
 
 void setup() {
   size(32, 32);
-  frameRate(20);
+  frameRate(80);
 
-  // Load and resize the source image
+  // load and resize the source image
   sourceImage = loadImage("try_2.png");
   sourceImage.resize(TOTAL_WIDTH, TOTAL_HEIGHT);
 
   buffer = new byte[TOTAL_WIDTH * TOTAL_HEIGHT * 2]; // For 16-bit color output
   particles = new Particle[TOTAL_WIDTH * TOTAL_HEIGHT]; // One particle per pixel
 
-  // Initialize particles (starting from edges or center randomly)
+  // initialize particles (starting from edges or center randomly)
   int index = 0;
   
   for (int y = 0; y < TOTAL_HEIGHT; y++) { // loops over rows
     for (int x = 0; x < TOTAL_WIDTH; x++) { // loops over columns
       
-      
       // random starting positions (center or edges)
       boolean startFromCenter = random(1) < 0.5;  // random(1) generates a random nr between 0 (inclusive) and 1 (exclusive).
       
       // ternary operator to decide a value based on a random condition
+      // sets the particle's target position (x, y) to match the pixel's position in the grid >>>>>
       // if true, the value becomes 0, if false the value becomes width -1
       int startX = startFromCenter ? width / 2 : (random(1) < 0.5 ? 0 : width - 1);
       int startY = startFromCenter ? height / 2 : (random(1) < 0.5 ? 0 : height - 1);
       
-      // Get the target pixel color from the image
+      // get the target pixel color from the image
       color targetColor = sourceImage.get(x, y);
       
-      
-      // Creates a new Particle object and stores it in the particles array.
+      // creates a new Particle object and stores it in the particles array.
       particles[index++] = new Particle(startX, startY, x, y, targetColor);
- 
-    //      1. Loops through each pixel of the 32x32 grid.
-    //2. For each pixel:
-    //    * Randomly determines whether the particle starts at the center or an edge.
-    //    * Sets the particle's target position (x, y) to match the pixel's position in the grid.
-    //    * Retrieves the target color of the pixel from the image.
-    //    * Creates a new Particle object and stores it in the particles array.
     }
   }
 
   // Initialize serial communication
   try {
-    String portName = "/dev/tty.usbserial-02B62278"; // Adjust as needed
+    String portName = "/dev/tty.usbserial-02B62278"; // PORT IS HERE
     serial = new Serial(this, portName, BAUD_RATE);
   } catch (Exception e) {
     println("Serial port not initialized...");
@@ -76,15 +68,14 @@ void draw() {
 }
 
 // Particle class for individual pixel behavior
-class Particle { // This defines how individual pixels (particles) behave.
-
+  class Particle { // This defines how individual pixels (particles) behave.
   float x, y;        // current position
   int targetX, targetY; // target position
   color targetColor; // target color
   boolean arrived;   // has particle reached target position
 
   // Initializes a particle with its starting position, target position, and color.
-  Particle(int startX, int startY, int targetX, int targetY, color targetColor) {
+    Particle(int startX, int startY, int targetX, int targetY, color targetColor) {
     x = startX;
     y = startY;
     this.targetX = targetX;
@@ -96,19 +87,16 @@ class Particle { // This defines how individual pixels (particles) behave.
   void update() { // update particle position
     if (!arrived) { // if the particle hasn’t reached its target, moves it 5% closer to the target
       
-      x += (targetX - x) * 0.05; // smooth move
-      y += (targetY - y) * 0.05; // uses linear interpolation
+      x += (targetX - x) * 0.01; // smooth move
+      y += (targetY - y) * 0.01; // uses linear interpolation
       
+      // if the particle is close enough to the target, snaps it into place and marks it as arrived.
       if (dist(x, y, targetX, targetY) < 0.5) {
         x = targetX;
         y = targetY;
         arrived = true;
       }
     }
-    //    If the particle hasn’t reached its target:
-    //    Moves it 5% closer to the target using linear interpolation >>>>>
-   //  a technique to smoothly transition between two values over time.
-    //    If the particle is close enough to the target, snaps it into place and marks it as arrived.
   }
 
   void display() { // draws the particle
