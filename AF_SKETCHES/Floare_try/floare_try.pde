@@ -4,11 +4,12 @@ final int TOTAL_WIDTH  = 32;
 final int TOTAL_HEIGHT = 32;
 final int BAUD_RATE    = 921600;
 
+// Global Variables
 Serial serial;
 byte[] buffer;
 
-PImage sourceImage;
-Particle[] particles;
+PImage sourceImage; // Stores the 32x32 image to serve as the final state of the animation.
+Particle[] particles; // An array of Particle objects representing individual pixels.
 
 void setup() {
   size(32, 32);
@@ -29,15 +30,19 @@ void setup() {
       boolean startFromCenter = random(1) < 0.5; // Randomly decide start point (random nr. between 1 and 0)
       
       // if startFromCenter is true, starting position is the center of the canvas
-      int startX = startFromCenter ? width / 2 : 
-      
-      
-      (random(1) < 0.5 ? 0 : width - 1);
-      
-      //
+      int startX = startFromCenter ? width / 2 : (random(1) < 0.5 ? 0 : width - 1);
       int startY = startFromCenter ? height / 2 : (random(1) < 0.5 ? 0 : height - 1);
+      
       color targetColor = sourceImage.get(x, y); // Get target pixel color
       particles[index++] = new Particle(startX, startY, x, y, targetColor);
+      
+      
+    //      1. Loops through each pixel of the 32x32 grid.
+    //2. For each pixel:
+    //    * Randomly determines whether the particle starts at the center or an edge.
+    //    * Sets the particle's target position (x, y) to match the pixel's position in the grid.
+    //    * Retrieves the target color of the pixel from the image.
+    //    * Creates a new Particle object and stores it in the particles array.
     }
   }
 
@@ -45,7 +50,7 @@ void setup() {
   String[] ports = Serial.list();
   printArray(ports);
   try {
-    String portName = "/dev/tty.usbserial-02B62278"; // Replace with your port
+    String portName = "/dev/tty.usbserial-02B62278"; // PORT IS HERE
     serial = new Serial(this, portName, BAUD_RATE);
     println("Serial port initialized: " + portName);
   } catch (Exception e) {
