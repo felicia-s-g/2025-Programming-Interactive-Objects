@@ -13,7 +13,7 @@ final int TOTAL_HEIGHT = 32;       // Matrix height (32x32)
 byte[] buffer = new byte[TOTAL_WIDTH * TOTAL_HEIGHT * 3];  // For RGB pixel data
 
 // Variables for tree animation
-float treeX = TOTAL_WIDTH / 2;  // Starting at the center
+float treeX = TOTAL_WIDTH / 1;  // Starting at the center
 float treeY = TOTAL_HEIGHT - 1; // At the bottom of the canvas
 float angle = -PI / 2;          // Initial angle for the tree
 float length = 8;               // Starting branch length
@@ -22,7 +22,7 @@ float time = 0;                 // Time for animation
 
 void setup() {
   size(32, 32);  // Scaled-up canvas for visualization (32x32 in real size)
-  frameRate(30);   // Frame rate for animation
+  frameRate(0.2);   // Frame rate for animation
   noFill();
   smooth();
   noStroke();

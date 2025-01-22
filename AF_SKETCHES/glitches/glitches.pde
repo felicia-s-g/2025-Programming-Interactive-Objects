@@ -6,7 +6,7 @@ int TOTAL_HEIGHT = 32;
 char[] asciiPalette = { '.', ':', '*', '+', '#', '@' }; // Characters
 color[] colors = { #CF2945, #000000, #389623, #DA8B15 };
 
-float glitchIntensity = 0.6; // adaptable glitch intensity (0 to 1)
+float glitchIntensity = 0.1; // adaptable glitch intensity (0 to 1)
 byte[] buffer;
 
 void setup() {
