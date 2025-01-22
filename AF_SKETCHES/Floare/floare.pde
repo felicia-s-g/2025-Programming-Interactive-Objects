@@ -31,8 +31,8 @@ void setup() {
   
   try {
     // On macOS / Linux see the console for all available ports
-    final String PORT_NAME = "/dev/cu.usbserial-02B5FCCE";
-    //final String PORT_NAME = “/dev/tty.usbserial-02B62278”;
+    //final String PORT_NAME = "/dev/cu.usbserial-02B5FCCE";
+    final String PORT_NAME = "/dev/tty.usbserial-02B62278";
     // On Windows the ports are numbered
     // final String PORT_NAME = "COM3";
     serial = new Serial(this, PORT_NAME, BAUD_RATE);
@@ -44,7 +44,7 @@ void setup() {
 void draw() {
    
   float imgSize = map(sin(frameCount * 0.05), -1, 1, 32, 256);
-  image(img, 0, -frameCount / 2 % 100);
+  image(img, 0, - frameCount / 2 % 100);
   
   // --------------------------------------------------------------------------
   // Write to the serial port (if open)
