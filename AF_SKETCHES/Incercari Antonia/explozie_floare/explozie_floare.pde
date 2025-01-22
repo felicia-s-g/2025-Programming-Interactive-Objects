@@ -8,10 +8,12 @@ final int BAUD_RATE    = 921600;
 Serial serial;
 byte[] buffer;
 
-Particle[] particles; // Array for particles representing the flower
-int particleCount = 300; // Number of particles
-boolean explosionComplete = false; // Flag for explosion state
-float animationSpeed = 0.03; // Speed of the explosion
+Particle[] particles; // array of particles
+int particleCount = 600; // nr. of particles
+boolean explosionComplete = false; 
+float animationSpeed = 0.08; // explosion speed
+
+//float animationSpeed = 1; // explosion speed
 
 color[] palette = {
   color(34, 139, 34),  // Green
@@ -32,7 +34,7 @@ void setup() {
   particles = new Particle[particleCount];
   for (int i = 0; i < particles.length; i++) {
     float angle = random(TWO_PI);
-    float radius = random(5, 12); // Control the spread of the particles
+    float radius = random(5, 12); // control the spread of the particles
     float targetX = width / 2 + cos(angle) * radius;
     float targetY = height / 2 + sin(angle) * radius;
     color c = palette[int(random(palette.length))];
@@ -47,7 +49,7 @@ void setup() {
   printArray(list);
 
   try {
-    final String PORT_NAME = "/dev/cu.usbserial-02B5FCCE";
+    final String PORT_NAME = "/dev/tty.usbserial-02B62278";
     serial = new Serial(this, PORT_NAME, BAUD_RATE);
   } catch (Exception e) {
     println("Serial port not initialized...");
@@ -55,7 +57,7 @@ void setup() {
 }
 
 void draw() {
-  background(0); // Black background
+  background(0); 
 
   explosionComplete = true; // Assume explosion is complete unless proven otherwise
 
