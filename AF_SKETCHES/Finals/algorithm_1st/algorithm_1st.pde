@@ -151,7 +151,7 @@ class Particle {
   void display() {
     fill(targetColor); // Always use the particle's target color
     noStroke();
-    rect(round(x * (width / TOTAL_WIDTH)), round(y * (height / TOTAL_HEIGHT)),
+    rect(x * (width / TOTAL_WIDTH), y * (height / TOTAL_HEIGHT),
          width / TOTAL_WIDTH, height / TOTAL_HEIGHT);
   }
 }
