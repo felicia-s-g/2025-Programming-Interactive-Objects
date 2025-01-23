@@ -33,7 +33,7 @@ void setup() {
   // init img
   images = new PImage[2];
 
-  images[0] = loadImage("try_2.png");
+  images[0] = loadImage("image1.png");
   images[0].resize(TOTAL_WIDTH, TOTAL_HEIGHT);
 
   images[1] = images[0].copy();
@@ -123,8 +123,7 @@ void initializeParticlesForImage(int imageIndex) {
   }
 }
 
-
-// init particles for current image
+// pixels = particles 
 // >>>>>>>>>>>>>>>>>>>>>>>>
 void assignTargetForImage(int imageIndex) {
   PImage sourceImage = images[imageIndex];
@@ -190,6 +189,8 @@ class Particle {
     scattered = false;
   }
 
+// state machine update
+// >>>>>>>>>>>>>>>>>>>>>>>>
   void update(int mode) {
     switch (mode) {
     case GATHERING:
@@ -233,6 +234,8 @@ class Particle {
     arrived = false;
   }
 
+// create particle scattering
+// >>>>>>>>>>>>>>>>>>>>>>>>
   void startScatter() {
     float r = random(1);
     if (r < 0.5) {
@@ -285,12 +288,7 @@ int packRGB16(int r, int g, int b) {
 
 
 
-
-
-
-
-
-// ANTONIA IS WRITING THIS >>>
+// ANTONIA IS ALSO WRITING THIS >>>
 
 
 // actual tree creation
@@ -307,6 +305,7 @@ void createRandomTreeVariant() { // actually PImage createRandomTreeVariant() {
   float trunkX = TOTAL_WIDTH / 2.0;
   float trunkHeight = random(8, 20);
   float trunkTopY = TOTAL_HEIGHT - trunkHeight;
+  
   pg.noStroke();
   pg.fill(56, 150, 35);
   pg.rect(trunkX, trunkTopY, 2, trunkHeight);
@@ -314,13 +313,13 @@ void createRandomTreeVariant() { // actually PImage createRandomTreeVariant() {
   // 2) draw random branches
   //    random y position [on trunk!], random #
   //    length & shape
-  //    renderedTree.fill(...);
-  //    renderedTree.rect(...);
+  //    .fill(...);
+  //    .rect(...);
 
   // 3) draw random flowers / berries
   //    random position, random #
   //    make sure they don't overlap if needed
-  //    renderedTree.rect(...);
+  //    .rect(...);
 
-  //    renderedTree.endDraw();
+  //    .endDraw();
 }
