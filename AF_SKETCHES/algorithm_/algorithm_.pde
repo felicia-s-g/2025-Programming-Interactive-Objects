@@ -84,7 +84,7 @@ void draw() {
 
       // TO WRITE
       images[1] = createRandomTreeVariant();
-      
+
       assignTargetForImage(currentImageIndex);
 
       mode = GATHERING;
@@ -124,6 +124,8 @@ void initializeParticlesForImage(int imageIndex) {
 }
 
 
+// init particles for current image
+// >>>>>>>>>>>>>>>>>>>>>>>>
 void assignTargetForImage(int imageIndex) {
   PImage sourceImage = images[imageIndex];
   int index = 0;
@@ -137,14 +139,16 @@ void assignTargetForImage(int imageIndex) {
   }
 }
 
-
+// scattering function
+// >>>>>>>>>>>>>>>>>>>>>>>>
 void startScattering() {
   for (Particle p : particles) {
     p.startScatter();
   }
 }
 
-
+// is everyone here?
+// >>>>>>>>>>>>>>>>>>>>>>>>
 boolean allParticlesArrived() {
   for (Particle p : particles) {
     if (!p.arrived) {
@@ -154,7 +158,8 @@ boolean allParticlesArrived() {
   return true;
 }
 
-
+// is everyone there?
+// >>>>>>>>>>>>>>>>>>>>>>>>
 boolean allParticlesScattered() {
   for (Particle p : particles) {
     if (!p.scattered) {
@@ -164,10 +169,11 @@ boolean allParticlesScattered() {
   return true;
 }
 
-
+// create particle object
+// >>>>>>>>>>>>>>>>>>>>>>>>
 class Particle {
-  float x, y;              // current position
-  float targetX, targetY;  // target position
+  float x, y;
+  float targetX, targetY;
   color targetColor;
   boolean arrived;
   boolean scattered;
@@ -242,8 +248,8 @@ class Particle {
   void display() {
     fill(targetColor);
     noStroke();
-    rect(x * (width / float(TOTAL_WIDTH)),
-      y * (height / float(TOTAL_HEIGHT)),
+    rect(round(x * (width / float(TOTAL_WIDTH))),
+      round(y * (height / float(TOTAL_HEIGHT))),
       width / float(TOTAL_WIDTH),
       height / float(TOTAL_HEIGHT));
   }
@@ -252,12 +258,12 @@ class Particle {
 void sendToSerial() {
   if (serial != null) {
 
-    renderedTree.loadPixels();
-
+    loadPixels();
     int idx = 0;
     for (int y = 0; y < TOTAL_HEIGHT; y++) {
       for (int x = 0; x < TOTAL_WIDTH; x++) {
-        color c = renderedTree.get(x, y);
+        color c = get(x * (width / TOTAL_WIDTH),
+          y * (height / TOTAL_HEIGHT));
         int rgb16 = packRGB16(int(red(c)), int(green(c)), int(blue(c)));
         buffer[idx++] = (byte)((rgb16 >> 8) & 0xFF);
         buffer[idx++] = (byte)(rgb16 & 0xFF);
@@ -272,6 +278,12 @@ void sendToSerial() {
 int packRGB16(int r, int g, int b) {
   return ((r >> 3) << 11) | ((g >> 2) << 5) | (b >> 3);
 }
+
+
+
+
+
+
 
 
 
