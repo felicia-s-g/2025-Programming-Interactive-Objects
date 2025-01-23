@@ -1,7 +1,3 @@
-/**
- * This Processing sketch sends all the pixels of the canvas to the serial port.
- */
-
 import processing.serial.*;
 
 final int TOTAL_WIDTH  = 32;
@@ -10,10 +6,13 @@ final int COLOR_DEPTH  = 16; // 24 or 16 bits
 final int BAUD_RATE    = 921600;
 
 Serial serial;
-byte[]buffer;
+byte[] buffer;
 
 // PImage is Processing's image type
 PImage img;
+
+float scrollSpeed = 0.2; // Pixels per frame
+float offsetX = 0;     // Horizontal offset for scrolling
 
 void setup() {
   // The Processing preprocessor only accepts literal values for size()
@@ -22,45 +21,54 @@ void setup() {
   
   smooth(8);
   
-  img = loadImage("t_2.png");
+  img = loadImage("margini.png");
 
-  buffer = new byte[TOTAL_WIDTH * TOTAL_HEIGHT * (COLOR_DEPTH / 8)];
+  buffer = new byte[TOTAL_WIDTH * TOTAL_HEIGHT * (COLOR_DEPTH / 4)];
 
   String[] list = Serial.list();
   printArray(list);
   
   try {
     // On macOS / Linux see the console for all available ports
-    //final String PORT_NAME = "/dev/tty.usbserial-02B62278";
-     final String PORT_NAME = "/dev/cu.usbserial-02B5FCCE";
+    final String PORT_NAME = "/dev/cu.usbserial-02B5FCCE";
     
     // On Windows the ports are numbered
     // final String PORT_NAME = "COM3";
     serial = new Serial(this, PORT_NAME, BAUD_RATE);
   } catch (Exception e) {
-    println("Serial port not intialized...");
+    println("Serial port not initialized...");
   }  
 }
 
 void draw() {
-   
-  float imgSize = map(sin(frameCount * 0.05), -1, 1, 32, 256);
-  image(img, 0, -frameCount / 2 % 1);
+  background(0); // Clear the screen
+
+  // Increment the horizontal offset for scrolling
+  offsetX += scrollSpeed;
   
+  // Reset the offset when the image has fully scrolled off the screen
+  if (offsetX >= img.width) {
+    offsetX = 0;
+  }
+  
+  // Draw the image twice to create a seamless scrolling effect
+  image(img, -offsetX, 0, img.width, height);            // Main image
+  image(img, -offsetX + img.width, 0, img.width, height); // Wraparound image
+
   // --------------------------------------------------------------------------
   // Write to the serial port (if open)
   if (serial != null) {
     loadPixels();
     int idx = 0;
     if (COLOR_DEPTH == 24) {
-      for (int i=0; i<pixels.length; i++) {
+      for (int i = 0; i < pixels.length; i++) {
         color c = pixels[i];
         buffer[idx++] = (byte)(c >> 16 & 0xFF); // r
         buffer[idx++] = (byte)(c >> 8 & 0xFF);  // g
         buffer[idx++] = (byte)(c & 0xFF);       // b
       }
     } else if (COLOR_DEPTH == 16) {
-      for (int i=0; i<pixels.length; i++) {
+      for (int i = 0; i < pixels.length; i++) {
         color c = pixels[i];
         byte r = (byte)(c >> 16 & 0xFF); // r
         byte g = (byte)(c >> 8 & 0xFF);  // g
