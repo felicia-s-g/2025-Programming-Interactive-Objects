@@ -322,5 +322,5 @@ void createRandomTreeVariant() { // actually PImage createRandomTreeVariant() {
   //    make sure they don't overlap if needed
   //    renderedTree.rect(...);
 
-  renderedTree.endDraw();
+  //    renderedTree.endDraw();
 }

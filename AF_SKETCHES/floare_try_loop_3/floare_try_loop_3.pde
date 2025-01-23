@@ -101,7 +101,6 @@ void startChaos() {
   }
 }
 
-// Particle class for individual pixel behavior
 class Particle {
   float x, y;        // Current position
   int targetX, targetY; // Target position
