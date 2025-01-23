@@ -16,7 +16,7 @@ void setup() {
   frameRate(80);
 
   // load and resize the source image
-  sourceImage = loadImage("try_2.png");
+  sourceImage = loadImage("Flower_03_inverted.png");
   sourceImage.resize(TOTAL_WIDTH, TOTAL_HEIGHT);
 
   buffer = new byte[TOTAL_WIDTH * TOTAL_HEIGHT * 2]; // For 16-bit color output
