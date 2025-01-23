@@ -78,15 +78,15 @@ class Particle {
 
   void update() { // Update particle position
     // Move the particle 1% closer to the target using linear interpolation
-    x += (targetX - x) * 0.01; 
-    y += (targetY - y) * 0.01;
+    x += (targetX - x) * 0.1; 
+    y += (targetY - y) * 0.1;
   }
 
   void display() { // Draw the particle
     fill(targetColor); // Always use the particle's target color
     noStroke();
-    rect(x * (width / TOTAL_WIDTH), y * (height / TOTAL_HEIGHT), // Draws the pixel
-         width / TOTAL_WIDTH, height / TOTAL_HEIGHT);
+    rect(round(x * (width / TOTAL_WIDTH)), round(y * (height / TOTAL_HEIGHT)), // Draws the pixel
+         1, 1);
   }
 }
 
