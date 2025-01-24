@@ -45,7 +45,7 @@ void setup() {
   String[] ports = Serial.list();
   printArray(ports);
   try {
-    String portName = "/dev/cu.usbserial-02B5FCCE"; // Replace with your port
+    String portName = "/dev/cu.usbserial-02B62278"; // Replace with your port
     serial = new Serial(this, portName, BAUD_RATE);
     println("Serial port initialized: " + portName);
   } catch (Exception e) {

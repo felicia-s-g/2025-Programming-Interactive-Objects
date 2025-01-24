@@ -47,7 +47,7 @@ void setup() {
 
   // Initialize serial communication
   try {
-    String portName = "/dev/tty.usbserial-02B62278"; // PORT IS HERE
+    String portName = "/dev/cu.usbserial-02B62278"; // PORT IS HERE
     serial = new Serial(this, portName, BAUD_RATE);
   } catch (Exception e) {
     println("Serial port not initialized...");

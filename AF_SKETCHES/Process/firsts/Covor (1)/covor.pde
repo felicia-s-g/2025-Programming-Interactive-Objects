@@ -21,7 +21,7 @@ void setup() {
   
   smooth(8);
   
-  img = loadImage("margini.png");
+  img = loadImage("t_2.png");
 
   buffer = new byte[TOTAL_WIDTH * TOTAL_HEIGHT * (COLOR_DEPTH / 4)];
 
@@ -30,7 +30,7 @@ void setup() {
   
   try {
     // On macOS / Linux see the console for all available ports
-    final String PORT_NAME = "/dev/cu.usbserial-02B5FCCE";
+    final String PORT_NAME = "/dev/cu.usbserial-02B62278";
     
     // On Windows the ports are numbered
     // final String PORT_NAME = "COM3";
