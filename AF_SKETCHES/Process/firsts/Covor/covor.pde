@@ -9,7 +9,9 @@ Serial serial;
 byte[] buffer;
 
 // PImage is Processing's image type
-PImage img;
+PImage[] images;
+int currentImageIndex = 0; // Tracks which image is being displayed
+int lastImageChangeTime = 0; // Tracks the last time the image changed
 
 float scrollSpeed = 0.2; // Pixels per frame
 float offsetX = 0;     // Horizontal offset for scrolling
@@ -21,7 +23,11 @@ void setup() {
   
   smooth(8);
   
-  img = loadImage("t_2.png");
+  images = new PImage[7];
+  for (int i = 0; i < 7; i++) {
+    images[i] = loadImage("image" + (i + 1) + ".png"); 
+    images[i].resize(TOTAL_WIDTH, TOTAL_HEIGHT);
+  }
 
   buffer = new byte[TOTAL_WIDTH * TOTAL_HEIGHT * (COLOR_DEPTH / 4)];
 
