@@ -15,9 +15,9 @@ byte[] buffer;
 
 // Array to hold multiple images
 PImage[] images;
-int totalImages = 5;        // Total number of images
+int totalImages = 8;        // Total number of images
 int currentImage = 0;       // Index of the current image
-int displayTime = 3000;     // Time each image is displayed (in milliseconds)
+int displayTime = 1700;     // Time each image is displayed (in milliseconds)
 int lastChangeTime = 0;     // Timestamp of the last image change
 
 void setup() {
@@ -48,7 +48,7 @@ void setup() {
   
   try {
     // Replace with your actual port name
-    final String PORT_NAME = "/dev/cu.usbserial-02B5FCCE"; // macOS/Linux
+    final String PORT_NAME = "/dev/tty.usbserial-02B62278"; // macOS/Linux
     // final String PORT_NAME = "COM3"; // Windows
     serial = new Serial(this, PORT_NAME, BAUD_RATE);
   } catch (Exception e) {
