@@ -49,7 +49,7 @@ void setup() {
   printArray(list);
 
   try {
-    final String PORT_NAME = "/dev/tty.usbserial-02B62278";
+    final String PORT_NAME = "/dev/cu.usbserial-02B5FCCE";
     serial = new Serial(this, PORT_NAME, BAUD_RATE);
   } catch (Exception e) {
     println("Serial port not initialized...");
